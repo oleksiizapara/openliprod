@@ -1,7 +1,7 @@
 import { Hub, Logger, Auth } from 'aws-amplify';
-import { getUser } from '../queryHelper';
-import { createUser } from '../mutationHelper';
 import configureStore from '../configureStore';
+import { createUser } from 'common/mutationHelper';
+import { getUser } from 'common/queryHelper';
 
 // const logger = new Logger('My-Logger');
 

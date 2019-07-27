@@ -13,6 +13,7 @@ import mockedConfigureStore from 'mocks/mockedConfigureStore';
 import { Routes } from 'routes/index';
 import AuthRedux from 'settings/components/AuthRedux';
 import logger from 'common/logger';
+import { listen } from 'hubs/authHub';
 
 Amplify.configure(aws_exports);
 
@@ -21,6 +22,9 @@ const mockedStore = mockedConfigureStore();
 
 export default function App() {
   logger.debug('App started');
+
+  listen();
+
   return (
     <Router>
       <Provider store={store}>
