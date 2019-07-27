@@ -3,7 +3,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import Amplify from 'aws-amplify';
+import Amplify, { API } from 'aws-amplify';
 
 import aws_exports from './aws-exports';
 
@@ -15,14 +15,12 @@ import AuthRedux from 'settings/components/AuthRedux';
 import logger from 'common/logger';
 import { listen } from 'hubs/authHub';
 
-Amplify.configure(aws_exports);
-
-const store = configureStore();
-const mockedStore = mockedConfigureStore();
-
 export default function App() {
   logger.debug('App started');
 
+  Amplify.configure(aws_exports);
+  API.configure(aws_exports);
+  const store = configureStore();
   listen();
 
   return (
@@ -37,6 +35,8 @@ export default function App() {
 
 export function MockedApp() {
   logger.debug('MockedApp started');
+  const mockedStore = mockedConfigureStore();
+
   return (
     <Router>
       <Provider store={mockedStore}>
