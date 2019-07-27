@@ -13,8 +13,8 @@ const loggerMiddleware = createLogger();
 
 const middleware =
   process.env.NODE_ENV === 'development'
-    ? applyMiddleware(logicMiddleware)
-    : applyMiddleware(logicMiddleware, loggerMiddleware);
+    ? applyMiddleware(logicMiddleware, loggerMiddleware)
+    : applyMiddleware(logicMiddleware);
 
 // using compose to allow for applyMiddleware, just add it in
 const enhancer =
