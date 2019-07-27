@@ -1,0 +1,19 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "openli-dev-20190506105655-authRole",
+            "UnauthRoleArn": "arn:aws:iam::775559920249:role/openli-dev-20190506105655-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::775559920249:role/openli-dev-20190506105655-authRole",
+            "Region": "ap-southeast-2",
+            "DeploymentBucketName": "openli-dev-20190506105655-deployment",
+            "UnauthRoleName": "openli-dev-20190506105655-unauthRole",
+            "StackName": "openli-dev-20190506105655",
+            "StackId": "arn:aws:cloudformation:ap-southeast-2:775559920249:stack/openli-dev-20190506105655/14d7cb00-6f89-11e9-9eb5-024486204d54"
+        },
+        "categories": {
+            "auth": {
+                "cognito474ee3dd": {}
+            }
+        }
+    }
+}

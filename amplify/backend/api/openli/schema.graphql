@@ -1,0 +1,94 @@
+type User @model @auth(rules: [{ allow: owner, ownerField: "id" }]) {
+  id: ID!
+  username: String!
+  name: String!
+  familyName: String!
+  readingMessages: [ReadingMessage]
+    @connection(name: "ReadingMessages", keyField: "authorId")
+  readingMessageHistories: [ReadingMessageHistory]
+    @connection(name: "ReadingMessageHistories", keyField: "authorId")
+  progresses: [Progress] @connection(name: "Progresses", keyField: "authorId")
+  createdAt: String
+  updatedAt: String
+}
+
+type ReadingMessage
+  @model
+  @auth(rules: [{ allow: owner, ownerField: "authorId" }]) {
+  id: ID!
+  author: User @connection(name: "ReadingMessages", keyField: "authorId")
+  authorId: String
+  title: String!
+  content: String!
+  createdAt: String
+  updatedAt: String
+  access: ReadingMessageAccess
+}
+
+enum ReadingMessageAccess {
+  PUBLIC
+  PRIVATE
+}
+
+type Progress @model @auth(rules: [{ allow: owner, ownerField: "authorId" }]) {
+  id: ID!
+  author: User @connection(name: "Progresses", keyField: "authorId")
+  authorId: String
+  readingMessageProgresses: [ReadingMessageProgress]
+  isCalculated: Boolean!
+  time: String
+  createdAt: String
+  updatedAt: String
+}
+
+type ReadingMessageHistory
+  @model
+  @auth(rules: [{ allow: owner, ownerField: "authorId" }]) {
+  id: ID!
+  author: User
+    @connection(name: "ReadingMessageHistories", keyField: "authorId")
+  authorId: String
+
+  readingMessageId: ID!
+  title: String!
+
+  words: [Word]
+  readingSpeed: Int!
+  totalWords: Int!
+  uniqueWords: [String]
+  recognisedWords: [String]
+  notRecognisedWords: [String]
+  recognisedWordsPercent: Float!
+  time: String
+  isCalculated: Boolean!
+  createdAt: String
+  updatedAt: String
+}
+
+type Word {
+  index: Int!
+  word: String!
+  time: String
+  isNotRecognisedCount: Int
+}
+
+type ReadingMessageProgress {
+  id: ID!
+  orderId: Int
+  readingMessageId: ID!
+  readingMessageTitle: String!
+  readingMessageProgressUnits: [ReadingMessageProgressUnit]
+  time: String!
+}
+
+type ReadingMessageProgressUnit {
+  id: ID!
+  readingMessageId: ID!
+  time: String!
+  readingSpeed: Int!
+  totalWords: Int!
+  uniqueWords: [String]
+  recognisedWords: [String]
+  notRecognisedWords: [String]
+  recognisedWordsPercent: Float!
+}
