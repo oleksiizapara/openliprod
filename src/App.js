@@ -19,10 +19,8 @@ export default function App() {
   logger.debug('App started');
 
   Amplify.configure(aws_exports);
-  API.configure(aws_exports);
   const store = configureStore();
   listen();
-
   return (
     <Router>
       <Provider store={store}>

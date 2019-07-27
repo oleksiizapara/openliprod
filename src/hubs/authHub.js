@@ -1,22 +1,62 @@
-import { Hub, Logger, Auth } from 'aws-amplify';
+import {
+  Hub,
+  Logger,
+  Auth,
+  API,
+  graphqlOperation,
+  Analytics
+} from 'aws-amplify';
+import Enumerable from 'linq';
 import configureStore from '../configureStore';
 import { createUser } from 'common/mutationHelper';
 import { getUser } from 'common/queryHelper';
+import * as customQueries from 'graphql_custom/queries';
+import * as mutations from 'graphql_custom/mutations';
+import { assertErrors } from 'common/common';
+import logger from 'common/logger';
 
 // const logger = new Logger('My-Logger');
 
 const handleAuthStateChange = async state => {
   if (state === 'signIn') {
-    const cognitoUser = await Auth.currentAuthenticatedUser();
-    const userExists = await getUser(cognitoUser.username);
-    if (!userExists) {
-      const createdUser = await createUser({
-        id: cognitoUser.username,
-        username: cognitoUser.username
+    try {
+      const cognitoUser = await Auth.currentAuthenticatedUser();
+
+      const usersResponse = assertErrors(
+        await API.graphql(
+          graphqlOperation(customQueries.listUsers, {
+            filter: {
+              id: { eq: cognitoUser.username }
+            }
+          })
+        )
+      );
+      const savedUser = Enumerable.from(
+        usersResponse.data.listUsers.items
+      ).firstOrDefault();
+
+      if (!savedUser) {
+        assertErrors(
+          await API.graphql(
+            graphqlOperation(mutations.createUser, {
+              input: {
+                id: cognitoUser.username,
+                username: cognitoUser.username,
+                name: cognitoUser.attributes.name,
+                familyName: cognitoUser.attributes.family_name
+              }
+            })
+          )
+        );
+      }
+    } catch (e) {
+      Analytics.record({
+        name: '[AuthHab] handleAuthStateChange',
+        attributes: {
+          error: e.message
+        }
       });
-      // this.props.onLogin(cognitoUser);
-    } else {
-      // this.props.onLogin(cognitoUser);
+      logger.debug('[AuthHab] handleAuthStateChange', e);
     }
   }
 };

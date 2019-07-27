@@ -19,6 +19,25 @@ export const getUser = `query GetUser($id: ID!) {
 }
 `;
 
+export const listUsers = `query ListUsers(
+  $filter: ModelUserFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      username
+      name
+      familyName
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+`;
+
 export const getReadingMessage = `query GetReadingMessage($id: ID!) {
   getReadingMessage(id: $id) {
     id
