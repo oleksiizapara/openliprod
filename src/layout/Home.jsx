@@ -12,7 +12,7 @@ const Home = () => {
     <Header as='h2'>
       Home
     </Header>
-    <Container textAlign='right'>
+    <Container>
       OpenLI web application is helping with English words pronunciations.
     </Container>
   </React.Fragment>
