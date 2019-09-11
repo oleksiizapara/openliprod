@@ -8,7 +8,9 @@ export const calculateReadingSpeed = words => {
   }
 
   const firstWordTime = words[0].time;
-  const lastWordTime = words[words.length - 1].time;
+  const lastWordTime = Enumerable.from(words)
+    .where(x => x.time > 0)
+    .last().time;
 
   return Math.round(
     (calculateTotalWordCount(words) * 60 * 1000) /

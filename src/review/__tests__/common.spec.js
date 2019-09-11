@@ -19,7 +19,8 @@ describe.each([
   [[{ time: 1000 }], 0],
   [[{ time: 1000 }, { time: 3000 }], 60],
   [[{ time: 1000 }, { time: 4500 }], 34],
-  [[{ time: 1000 }, { time: 2000 }, { time: 4000 }], 60]
+  [[{ time: 1000 }, { time: 2000 }, { time: 4000 }], 60],
+  [[{ time: 1000 }, { time: 2000 }, { time: 4000 }, {}], 80]
 ])('', (words, readingSpeed) => {
   test(`calculate Reading Speed, words: ${JSON.stringify(
     words
