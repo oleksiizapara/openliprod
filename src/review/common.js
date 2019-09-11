@@ -7,15 +7,22 @@ export const calculateReadingSpeed = words => {
     return 0;
   }
 
-  const firstWordTime = words[0].time;
+  const firstWordTime = Enumerable.from(words)
+    .where(x => x.time !== undefined)
+    .first();
   const lastWordTime = Enumerable.from(words)
-    .where(x => x.time > 0)
-    .last().time;
+    .where(x => x.time !== undefined)
+    .last();
+  var ttw = calculateTotalWordCount(words);
 
-  return Math.round(
+  var result = Math.round(
     (calculateTotalWordCount(words) * 60 * 1000) /
-      (lastWordTime - firstWordTime)
+      (lastWordTime.time - firstWordTime.time)
   );
+
+  console.log({ lastWordTime, firstWordTime, ttw, result });
+
+  return result;
 };
 
 const dirtyCalculateRecognisedWords = words => {

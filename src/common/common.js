@@ -28,7 +28,7 @@ export const createReadingMessageProgresses = readingMessageHistories => {
     .orderByDescending(x => x.time)
     .groupBy(x => x.readingMessageId)
     .select((x, i) => {
-      const latestHistory = x.last();
+      const latestHistory = x.where(x => x.time !== undefined).last();
       return {
         readingMessageId: latestHistory.readingMessageId,
         orderId: i,
